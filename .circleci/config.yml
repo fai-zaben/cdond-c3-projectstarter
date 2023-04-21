@@ -154,7 +154,7 @@ jobs:
           command: |
             echo $(aws ec2 describe-instances  \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters Name=tag:aws:clouformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+              --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --output text) >> ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
@@ -326,7 +326,10 @@ jobs:
             else
               return 1
             fi
-      # Here's where you will add some code to rollback on failure  
+      - destroy-environment:
+          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      - revert-migrations:
+          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   # cloudfront-update:
   #   docker:
