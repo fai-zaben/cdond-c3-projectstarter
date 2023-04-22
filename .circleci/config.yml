@@ -13,7 +13,7 @@ commands:
           command: |
             aws cloudformation delete-stack \
             --stack-name udapeople-backend-<<parameters.workfow_id>>
-            aws s3 rm s3://udapeople-277913674504
+            aws s3 rm s3://udapeople-<<parameters.workfow_id>>
             aws cloudformation delete-stack \
             --stack-name udapeople-frontend-<<parameters.workfow_id>>
 
@@ -330,6 +330,7 @@ jobs:
             then
               return 0
             else
+              cat "${API_URL}/api/status"
               return 1
             fi
       - run:
@@ -357,7 +358,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y npm nodejs
+            yum install -y npm nodejs tar gzip --enablerepo=epel
       - run:
           name: Update cloudfront distribution
           command: |
@@ -378,7 +379,7 @@ jobs:
       docker:
         - image: amazon/aws-cli
       steps:
-        # Checkout code from git
+        - ckeckout
         - run:
             name: Get old stack workflow id
             command: |
