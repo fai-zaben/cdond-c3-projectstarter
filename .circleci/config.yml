@@ -31,7 +31,12 @@ commands:
             npm install
             npm run build 
             npm run migrations:revert      
-            
+parameters:
+  workflow_id:
+    type: string
+    default: '${CIRCLE_WORKFLOW_ID}'
+
+
 jobs:
   build-frontend:
     docker:
@@ -305,7 +310,7 @@ jobs:
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            if curl "${API_URL}/api/status" | grep "ok"
+            if curl -s "${API_URL}/api/status" | grep "ok"
             then
               return 0
             else
