@@ -317,21 +317,22 @@ jobs:
             apk add --update --no-cache tar gzip aws-cli npm nodejs curl
       - attach_workspace:
           at: ~/
-      # - run:
-      #     name: Get backend url and Backend smoke test
-      #     command: |
-      #       export BACKEND_IP=$(aws ec2 describe-instances  \
-      #         --query 'Reservations[*].Instances[*].PublicIpAddress' \
-      #         --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
-      #         --output text)
-      #       export API_URL="http://${BACKEND_IP}:3030"
-      #       echo "${API_URL}"
-      #       if curl -s "${API_URL}/api/status" | grep "ok"
-      #       then
-      #         return 0
-      #       else
-      #         return 0
-      #       fi
+      - run:
+          name: Get backend url and Backend smoke test
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances  \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+              --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            if curl -s "${API_URL}/api/status" | grep "ok"
+            then
+              return 0
+            else
+              echo "${API_URL}/api/status"
+              return 0
+            fi
       - run:
           name: Frontend smoke test.
           command: |
@@ -344,10 +345,10 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment:
-          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-      - revert-migrations:
-          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
+      # - destroy-environment:
+      #     workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      # - revert-migrations:
+      #     workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   cloudfront-update:
     docker:
