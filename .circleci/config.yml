@@ -244,8 +244,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache tar gzip aws-cli npm nodejs 
-      # - restore_cache:
-      #     keys: [frontend-build]
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Get backend url
           command: |
@@ -257,8 +257,8 @@ jobs:
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
-      - restore_cache:
-          keys: [frontend-build]
+      # - restore_cache:
+      #     keys: [frontend-build]
       - run:
           name: Deploy frontend objects
           command: |
