@@ -324,14 +324,7 @@ jobs:
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            if curl -s '${API_URL}/api/status' | grep "ok" 
-            then 
-              echo "${API_URL}/api/status" 
-              return 0 
-            else 
-              echo "${API_URL}/api/status"  
-              return 1 
-            fi
+            if curl -s '${API_URL}/api/status' | grep "ok"; then echo "ok"; else return 1; fi
 
       - run:
           name: Frontend smoke test.
