@@ -200,7 +200,7 @@ jobs:
             ansible-playbook -i inventory.txt configure-server.yml
       - persist_to_workspace:
           root: ~/
-          paths: [project/backend/.env]
+          paths: [project/backend]
       - destroy-environment:
           workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -283,10 +283,10 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache ansible tar gzip aws-cli npm nodejs
-      - attach_workspace:
-          at: ~/
       - restore_cache:
           keys: [backend-build]
+      - attach_workspace:
+          at: ~/
       - run:
           name: Deploy backend
           command: |
@@ -324,7 +324,7 @@ jobs:
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            if curl "${API_URL}/api/status" | grep "ok"
+            if curl -s "${API_URL}/api/status" | grep "ok"
             then
               echo "${API_URL}/api/status"
               return 0
