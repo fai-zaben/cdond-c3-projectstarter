@@ -315,8 +315,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache tar gzip aws-cli npm nodejs curl
-      - attach_workspace:
-          at: ~/
       - run:
           name: Get backend url and Backend smoke test
           command: |
@@ -326,7 +324,7 @@ jobs:
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            if curl -s "${API_URL}/api/status" | grep "ok"
+            if curl "${API_URL}/api/status" | grep "ok"
             then
               echo "${API_URL}/api/status"
               return 0
@@ -345,10 +343,10 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment:
-          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-      - revert-migrations:
-          workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
+      # - destroy-environment:
+      #     workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      # - revert-migrations:
+      #     workfow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   cloudfront-update:
     docker:
