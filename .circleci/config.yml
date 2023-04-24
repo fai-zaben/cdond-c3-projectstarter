@@ -424,4 +424,5 @@ workflows:
           requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
+      
 # clean up commented to not distroy the services 
