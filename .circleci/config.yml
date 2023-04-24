@@ -13,7 +13,7 @@ commands:
           command: |
             aws cloudformation delete-stack \
             --stack-name udapeople-backend-<<parameters.workfow_id>>
-            aws s3 rm s3://udapeople-<<parameters.workfow_id>> --recursive
+            aws s3 rm "s3://udapeople-<<parameters.workfow_id>>" --recursive
             aws cloudformation delete-stack \
             --stack-name udapeople-frontend-<<parameters.workfow_id>>
 
