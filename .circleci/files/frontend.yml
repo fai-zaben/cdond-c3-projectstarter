@@ -15,7 +15,7 @@ Resources:
         Rules:
           - ObjectOwnership: ObjectWriter
       PublicAccessBlockConfiguration:
-        BockPublicAcls: false
+        BlockPublicAcls: false
         BlockPublicPolicy: false
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
